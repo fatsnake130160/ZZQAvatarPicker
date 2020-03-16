@@ -106,7 +106,9 @@
     __weak typeof (self) weakSelf = self;
     [self checkCameraAuthorization:nil completion:^(BOOL isPermission) {
         if (!isPermission) {
-            [weakSelf showSettingAlertWithAuth:@"相机" settingName:@"相机"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf showSettingAlertWithAuth:@"照片" settingName:@"照片"];
+            });
         }
     }];
 
@@ -150,7 +152,11 @@
     __weak typeof (self) weakSelf = self;
     [self checkPhotoLibraryAuthorization:nil completion:^(BOOL isPermission) {
         if (!isPermission) {
-            [weakSelf showSettingAlertWithAuth:@"相册" settingName:@"照片"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //回到主线程里面就不会出现延时几秒之后才执行UI操作
+                //do you work
+                [weakSelf showSettingAlertWithAuth:@"相册" settingName:@"相册"];
+             });
         }
     }];
 }
